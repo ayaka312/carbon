@@ -1,0 +1,51 @@
+#include <iostream>
+#include <cassert>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+long long getPalindromesCount(string s) {
+    assert(5 <= s.length() && s.length() <= 100000);
+    assert(all_of(s.begin(), s.end(), [](char x) { return x == '0' || x == '1'; }));
+
+    // initialize variables
+    int n = s.length();
+    vector<long long> pre_cnt(4, 0), suf_cnt(4, 0);
+    vector<long long> cnt(2, 0), cnt_so_far(2, 0);
+    long long mod = 1000000007, ans = 0;
+
+    for (int j = 0; j < n; ++j) {
+        suf_cnt[s[j] - '0'] += cnt[0];
+        suf_cnt[2 + s[j] - '0'] += cnt[1];
+        cnt[s[j] - '0'] += 1;
+    }
+
+    for (int j = 0; j < n; ++j) {
+        cnt[s[j] - '0'] -= 1;
+        suf_cnt[2 * (s[j] - '0')] -= cnt[0];
+        suf_cnt[2 * (s[j] - '0') + 1] -= cnt[1];
+
+        ans += pre_cnt[0] * suf_cnt[0]; // "00" and "00"
+        ans += pre_cnt[1] * suf_cnt[2]; // "01" and "10"
+        ans += pre_cnt[2] * suf_cnt[1]; // "10" and "01"
+        ans += pre_cnt[3] * suf_cnt[3]; // "11" and "11"
+        ans %= mod;
+
+        pre_cnt[s[j] - '0'] += cnt_so_far[0];
+        pre_cnt[2 + (s[j] - '0')] += cnt_so_far[1];
+        cnt_so_far[s[j] - '0'] += 1;
+    }
+
+    return ans;
+}
+
+int main() {
+    while (true) {
+        string user_input;
+        cin >> user_input;
+        long long result = getPalindromesCount(user_input);
+        cout << result << endl;
+    }
+    return 0;
+}
