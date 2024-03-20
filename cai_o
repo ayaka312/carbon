@@ -1,0 +1,56 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int getUmbrellas(int n, vector<int>& p) {
+    int count = 0;
+    for (int i = 0; i < p.size(); ++i) {
+        if (p[i] == n) {
+            count = 1;
+            break;
+        }
+    }
+    if (count != 1) {
+        int sums = 0;
+        for (int i = 0; i < p.size(); ++i)
+            sums += p[i];
+        if (sums == n)
+            count = p.size();
+    }
+    sort(p.begin(), p.end(), greater<int>());
+    for (int i = 0; i < p.size(); ++i) {
+        if (count != 1 && count != p.size() && n >= p[i]) {
+            while (n >= p[i]) {
+                if (n % p[i] == 0) {
+                    count += 1;
+                    n = n - p[i];
+                }
+            }
+        }
+    }
+    if (count == 0)
+        count = -1;
+    return count;
+}
+
+int main() {
+    while (true) {
+        int n;
+        cin >> n;
+        int p_count;
+        cin >> p_count;
+        vector<int> p(p_count);
+
+        for (int i = 0; i < p_count; ++i) {
+            int p_item;
+            cin >> p_item;
+            p[i] = p_item;
+        }
+
+        int res = getUmbrellas(n, p);
+        cout << res << endl;
+    }
+    return 0;
+}
