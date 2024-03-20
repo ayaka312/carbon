@@ -1,3 +1,9 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
 class Solution { 
 public: 
     int minProcessingTime(vector<int>& processorTimes, vector<int>& taskTimes) { 
@@ -16,3 +22,33 @@ public:
         return answer; 
     } 
 };
+
+int main() {
+    Solution solution;
+    vector<int> processorTimes;
+    vector<int> taskTimes;
+
+    int processorCount, taskCount;
+    cout << "Enter the number of processors: ";
+    cin >> processorCount;
+    cout << "Enter the processing times of " << processorCount << " processors: ";
+    for (int i = 0; i < processorCount; ++i) {
+        int time;
+        cin >> time;
+        processorTimes.push_back(time);
+    }
+
+    cout << "Enter the number of tasks: ";
+    cin >> taskCount;
+    cout << "Enter the processing times of " << taskCount << " tasks: ";
+    for (int i = 0; i < taskCount; ++i) {
+        int time;
+        cin >> time;
+        taskTimes.push_back(time);
+    }
+
+    int result = solution.minProcessingTime(processorTimes, taskTimes);
+    cout << "Minimum Processing Time: " << result << endl;
+
+    return 0;
+}
